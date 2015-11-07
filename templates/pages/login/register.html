@@ -1,0 +1,56 @@
+{{ define "title" }}Register{{ end }}
+{{ define "head" }}{{ end }}
+{{ define "css" }}{{ end }}
+{{ define "js" }}
+<script>
+var widgetid;
+var onloadCallback = function() {
+  widgetid = grecaptcha.render('recaptcha-target', {
+    'sitekey' : '{{ .sitekey }}',
+    'theme' : 'light'
+  });
+}
+</script>
+<script src='https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit'></script>
+{{ end }}
+{{ define "content" }}
+<div class="mdl-grid">
+  <div class="mdl-cell mdl-cell--4-col">
+    <div class="mdl-card mdl-shadow--2dp">
+      <div class="mdl-card__title">
+        <h2 class="mdl-card__title-text">Login</h2>
+      </div>
+      <div class="mdl-card__supporting-text">
+        {{ range .ctx.Session.Flashes }}
+        <div>{{ . }}</div>
+        {{ end }}
+      </div>
+      <div class="mdl-card__actions">
+        <form action="{{ reverse "register" }}" method="POST">
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" type="text" name="username" id="username" pattern="[a-zA-Z0-9_]+" maxlength="16" />
+            <label class="mdl-textfield__label" for="username">Username</label>
+            <span class="mdl-textfield__error">Input is not a vaild Username</span>
+          </div>
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" type="text" name="email" id="email" pattern="^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$" />
+            <label class="mdl-textfield__label" for="email">Email</label>
+            <span class="mdl-textfield__error">Input is not a vaild email address!</span>
+          </div>
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" type="password" name="password" id="password" />
+            <label class="mdl-textfield__label" for="password">Password</label>
+          </div>
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <div class="mdl-textfield__label">Prove you're human</div>
+            <div style="margin-top:50px;" id='recaptcha-target'></div>
+          </div>
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--acce">Register</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{{ end }}

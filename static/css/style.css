@@ -1,0 +1,30 @@
+body .site {
+  font-family: 'Roboto', 'Helvetica', sans-serif;
+}
+
+.site-posts {
+  max-width: 900px;
+  padding: 0;
+  /*display: flex;*/
+  width: 100%;
+  margin: 0 auto;
+  flex-shrink: 0;
+}
+
+img.emoji {
+  height: 1em;
+  width: 1em;
+  margin: 0 .05em 0 .1em;
+  vertical-align: -0.1em;
+}
+
+textarea {
+  resize: none;
+  overflow: auto;
+  height: 100%;
+}
+
+.mdl-textfield {
+  width: 100%;
+  height: 100%;
+}

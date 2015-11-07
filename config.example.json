@@ -1,0 +1,24 @@
+{
+  "Server": {
+    "Address": "0.0.0.0:8000",
+    "Secret": "THISISABADSECRETANDYOUSHOULDCHANGEME",
+    "Dburl": "mongodb://localhost/"
+  },
+  "Mailgun": {
+    "Private": "NOT A REAL KEY",
+    "Public": "NOT A REAL KEY",
+    "Domain": "example.com",
+		"SenderName":  "Example Sender",
+		"SenderEmail": "sender@example.com"
+  },
+  "Recaptcha": {
+    "Secret": "NOT REAL",
+    "Sitekey": "NOT REAL"
+  },
+  "Site": {
+    "Domain": "example.com",
+    "Title": "Stupid Blog",
+    "Description": "A stupid blog about stupid things.",
+    "AllowRegistration": true
+  }
+}

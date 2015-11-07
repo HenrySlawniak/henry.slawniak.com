@@ -1,0 +1,35 @@
+{{ define "title" }}Login{{ end }}
+{{ define "head" }}{{ end }}
+{{ define "css" }}{{ end }}
+{{ define "js" }}{{ end }}
+{{ define "content" }}
+<div class="mdl-grid">
+  <div class="mdl-cell mdl-cell--4-col">
+    <div class="mdl-card mdl-shadow--2dp">
+      <div class="mdl-card__title">
+        <h2 class="mdl-card__title-text">Login</h2>
+      </div>
+      <div class="mdl-card__supporting-text">
+        {{ range .ctx.Session.Flashes }}
+        <div>{{ . }}</div>
+        {{ end }}
+      </div>
+      <div class="mdl-card__actions">
+        <form action="{{ reverse "login" }}" method="POST">
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" type="text" name="username" id="username" pattern="[a-zA-Z0-9_]+" maxlength="16" />
+            <label class="mdl-textfield__label" for="username">Username</label>
+          </div>
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" type="password" name="password" id="password" />
+            <label class="mdl-textfield__label" for="password">Password</label>
+          </div>
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--acce">Login</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{{ end }}

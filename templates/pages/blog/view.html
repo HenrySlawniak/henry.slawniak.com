@@ -1,0 +1,13 @@
+{{ define "title" }}{{ .post.Title }}{{ end }}
+{{ define "head" }}{{ end }}
+{{ define "css" }}{{ end }}
+{{ define "js" }}{{ end }}
+{{ define "content" }}
+<section class="section__center mdl-grid mdl-grid__no-spacing">
+  <div class="mdl-cell mdl-cell--12-col">
+    <div class="mdl-card mdl-cell mdl-cell--12-col">
+      <div id="markdown-preview">{{ .post.Content }}</div>
+    </div>
+  </div>
+</section>
+{{ end }}

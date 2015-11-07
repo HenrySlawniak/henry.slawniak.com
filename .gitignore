@@ -1,0 +1,8 @@
+/pkg
+/src
+/config.gcfg
+/config.json
+*.exe
+uploadtmp
+*.log
+stats.dat

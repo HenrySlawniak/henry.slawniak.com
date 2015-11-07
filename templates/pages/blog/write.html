@@ -1,0 +1,66 @@
+{{ define "title" }}Write a blog post{{ end }}
+{{ define "head" }}{{ end }}
+{{ define "css" }}{{ end }}
+{{ define "js" }}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/5.0.0/markdown-it.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/1.4.1/twemoji.min.js"></script>
+<script src="/assets/js/markdown-it-emoji.min.js"></script>
+<script>
+var md;
+
+function updateMarkdownPreview() {
+  src = document.getElementById("markdown-input").value
+  res = md.render(src)
+  document.getElementById("markdown-preview").innerHTML = res;
+  document.getElementById("markdown-input").style.height = "auto";
+  document.getElementById("markdown-input").style.height = document.getElementById("markdown-input").scrollHeight+"px";
+}
+
+function delayedMarkdownPreviewUpdate() {
+  window.setTimeout(updateMarkdownPreview, 0);
+}
+
+document.addEventListener("DOMContentLoaded", function(event) {
+  md = window.markdownit({
+    typographer: true
+  }).use(window.markdownitEmoji);
+
+  md.renderer.rules.emoji = function(token, idx) {
+    return twemoji.parse(token[idx].content);
+  };
+
+  document.getElementById("markdown-input").onchange = updateMarkdownPreview;
+  document.getElementById("markdown-input").onkeydown = delayedMarkdownPreviewUpdate;
+  document.getElementById("markdown-input").ondrop = delayedMarkdownPreviewUpdate;
+  document.getElementById("markdown-input").onpaste = delayedMarkdownPreviewUpdate;
+  document.getElementById("markdown-input").oncut = delayedMarkdownPreviewUpdate;
+  updateMarkdownPreview();
+
+});
+</script>
+{{ end }}
+{{ define "content" }}
+<section class="section__center mdl-grid mdl-grid__no-spacing">
+  <div class="mdl-cell mdl-cell--12-col">
+    <form action="{{ reverse "blog-write" }}" method="POST" enctype="multipart/form-data">
+      <div class="mdl-card mdl-cell mdl-cell--12-col">
+        <div class="mdl-card__supporting-text">
+          <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" type="text" id="title" name="title" style="width:100%;" />
+          </div>
+        </div>
+      </div>
+      <div class="mdl-card mdl-cell mdl-cell--12-col">
+        <div class="mdl-card__supporting-text">
+          <div class="mdl-textfield mdl-js-textfield">
+            <textarea class="mdl-textfield__input" type="text" id="markdown-input" style="width:100%;"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="mdl-card mdl-cell mdl-cell--12-col">
+        <div id="markdown-preview" class="mdl-card__supporting-text"></div>
+      </div>
+    </form>
+  </div>
+</section>
+{{ end }}

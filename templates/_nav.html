@@ -1,0 +1,27 @@
+{{ define "nav" }}
+<header class="mdl-layout__header">
+  <div class="mdl-layout__header-row">
+    <span class="mdl-layout-title">{{ .ctx.Site.Title }}</span>
+    <div class="mdl-layout-spacer"></div>
+    <nav class="mdl-navigation">
+      <a class="mdl-navigation__link" href="{{ reverse "index" }}">Home</a>
+      <a class="mdl-navigation__link" href="{{ reverse "bio" }}">Bio</a>
+      <a class="mdl-navigation__link" href="{{ reverse "blog" }}">Blog</a>
+      <!-- <a class="mdl-navigation__link" href="#projects">Projects</a> -->
+    </nav>
+  </div>
+</header>
+<div class="mdl-layout__drawer">
+  <span class="mdl-layout-title">User Actions</span>
+  <nav class="mdl-navigation">
+    {{ if .ctx.User }}
+    <a class="mdl-navigation__link" href="{{ reverse "logout" }}">Logout</a>
+    {{ else }}
+    <a class="mdl-navigation__link" href="{{ reverse "login" }}">Login</a>
+    {{ if .ctx.Site.AllowRegistration }}
+    <a class="mdl-navigation__link" href="{{ reverse "register" }}">Register</a>
+    {{ end }}
+    {{ end }}
+  </nav>
+</div>
+{{ end }}
