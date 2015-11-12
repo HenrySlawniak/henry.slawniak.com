@@ -11,6 +11,7 @@ var md;
 function updateMarkdownPreview() {
   src = document.getElementById("markdown-input").value
   res = md.render(src)
+  document.getElementById("markdown-content").value = res;
   document.getElementById("markdown-preview").innerHTML = res;
   document.getElementById("markdown-input").style.height = "auto";
   document.getElementById("markdown-input").style.height = document.getElementById("markdown-input").scrollHeight+"px";
@@ -18,6 +19,10 @@ function updateMarkdownPreview() {
 
 function delayedMarkdownPreviewUpdate() {
   window.setTimeout(updateMarkdownPreview, 0);
+}
+
+function processForm(e) {
+  updateMarkdownPreview();
 }
 
 document.addEventListener("DOMContentLoaded", function(event) {
@@ -36,30 +41,48 @@ document.addEventListener("DOMContentLoaded", function(event) {
   document.getElementById("markdown-input").oncut = delayedMarkdownPreviewUpdate;
   updateMarkdownPreview();
 
+  var form = document.getElementById("write-form")
+  if (form.attachEvent) {
+    form.attachEvent("submit", processForm);
+  } else {
+      form.addEventListener("submit", processForm);
+  }
+
 });
 </script>
 {{ end }}
 {{ define "content" }}
 <section class="section__center mdl-grid mdl-grid__no-spacing">
+  {{ range .ctx.Session.Flashes }}
+  <div>{{ . }}</div>
+  {{ end }}
   <div class="mdl-cell mdl-cell--12-col">
-    <form action="{{ reverse "blog-write" }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ reverse "blog-write" }}" method="POST" enctype="multipart/form-data" id="write-form">
       <div class="mdl-card mdl-cell mdl-cell--12-col">
         <div class="mdl-card__supporting-text">
           <div class="mdl-textfield mdl-js-textfield">
             <input class="mdl-textfield__input" type="text" id="title" name="title" style="width:100%;" />
+            <label class="mdl-textfield__label" for="sample1">Post Title</label>
+          </div>
+          <div class="mdl-textfield mdl-js-textfield">
+            <input type="file" id="blog-image" name="blog-image" accept="image/*" style="100%" />
           </div>
         </div>
       </div>
       <div class="mdl-card mdl-cell mdl-cell--12-col">
         <div class="mdl-card__supporting-text">
           <div class="mdl-textfield mdl-js-textfield">
-            <textarea class="mdl-textfield__input" type="text" id="markdown-input" style="width:100%;"></textarea>
+            <textarea class="mdl-textfield__input" name="source" type="text" id="markdown-input" style="width:100%;"></textarea>
           </div>
         </div>
       </div>
       <div class="mdl-card mdl-cell mdl-cell--12-col">
         <div id="markdown-preview" class="mdl-card__supporting-text"></div>
       </div>
+      <div class="mdl-card mdl-cell mdl-cell--12-col">
+        <button type='submit' class='mdl-button mdl-js-button mdl-button--raised mdl-button--colored'>Submit</button>
+      </div>
+      <input type="text" id="markdown-content" name="content" style="visibility:none;" />
     </form>
   </div>
 </section>

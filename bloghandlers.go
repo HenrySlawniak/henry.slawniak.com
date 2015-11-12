@@ -21,6 +21,8 @@
 package main
 
 import (
+	"github.com/gorilla/mux"
+	"gopkg.in/mgo.v2/bson"
 	"net/http"
 )
 
@@ -35,6 +37,39 @@ func BlogWriteFormHandler(w http.ResponseWriter, req *http.Request, ctx *Context
 	return T("pages/blog/write.html", pjax).Execute(w, map[string]interface{}{
 		"ctx": ctx,
 	})
+}
+
+func BlogReadHandler(w http.ResponseWriter, req *http.Request, ctx *Context, pjax bool) (err error) {
+	vars := mux.Vars(req)
+	slug := vars["slug"]
+
+	post, err := GetBlogPostWithSlug(slug)
+	if err != nil {
+		return NotFoundHandler(w, req, ctx, pjax)
+	}
+
+	return T("pages/blog/read.html", pjax).Execute(w, map[string]interface{}{
+		"ctx":  ctx,
+		"post": post,
+	})
+}
+
+func BlogStaticHandler(w http.ResponseWriter, req *http.Request, ctx *Context, pjax bool) (err error) {
+	vars := mux.Vars(req)
+	id := vars["id"]
+
+	if bson.IsObjectIdHex(id) {
+		realid := bson.ObjectIdHex(id)
+		post, err := GetBlogPostWithId(realid)
+		if err != nil {
+			return NotFoundHandler(w, req, ctx, pjax)
+		}
+
+		http.Redirect(w, req, post.SlugUrl(), http.StatusFound)
+		return nil
+	}
+
+	return BadRequestHandler(w, req, ctx, pjax)
 }
 
 func BlogWriteHandler(w http.ResponseWriter, req *http.Request, ctx *Context, pjax bool) (err error) {

@@ -23,6 +23,7 @@ package main
 import (
 	"crypto/md5"
 	"crypto/sha1"
+	"encoding/json"
 	"fmt"
 	"github.com/dustin/go-humanize"
 	"html/template"
@@ -48,6 +49,12 @@ var funcs = template.FuncMap{
 	"possessive":        possessive,
 	"flargenum":         flargenum,
 	"join":              join,
+	"json":              indentjson,
+}
+
+func indentjson(i interface{}) string {
+	s, _ := json.MarshalIndent(i, "", "  ")
+	return string(s)
 }
 
 func join(s []string) string {

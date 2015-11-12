@@ -120,10 +120,10 @@ func main() {
 	// router.Path("/blog/edit").Handler(handler(BlogEditHandler)).Methods("POST")
 
 	router.Path("/blog/read").Name("blog-read")
-	// router.Path("/blog/read/{slug}").Handler(handler(BlogReadHandler)).Methods("GET")
+	router.Path("/blog/read/{slug}").Handler(handler(BlogReadHandler)).Methods("GET")
 
 	router.Path("/blog/static").Name("blog-static")
-	// router.Path("/blog/static/{id}").Handler(handler(BlogStaticHandler)).Methods("GET")
+	router.Path("/blog/static/{id}").Handler(handler(BlogStaticHandler)).Methods("GET")
 
 	router.Path("/login").Handler(handler(LoginHandler)).Name("login").Methods("POST")
 	router.Path("/login").Handler(handler(LoginFormHandler)).Methods("GET")

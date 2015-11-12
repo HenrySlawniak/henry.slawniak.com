@@ -4,6 +4,8 @@
 {{ define "js" }}{{ end }}
 {{ define "content" }}
 <section class="section__center mdl-grid mdl-grid__no-spacing">
+  <h1>{{ .post.Title }}</h1>
+  <pre>{{ .post | json }}</pre>
   <div class="mdl-cell mdl-cell--12-col">
     <div class="mdl-card mdl-cell mdl-cell--12-col">
       <div id="markdown-preview">{{ .post.Content }}</div>

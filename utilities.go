@@ -22,7 +22,12 @@ package main
 
 import (
 	"fmt"
+	"golang.org/x/text/unicode/norm"
+	"unicode"
 )
+
+var lat = []*unicode.RangeTable{unicode.Letter, unicode.Number}
+var nop = []*unicode.RangeTable{unicode.Mark, unicode.Sk, unicode.Lm}
 
 func reverse(name string, things ...interface{}) string {
 	//convert the things to strings
@@ -36,4 +41,24 @@ func reverse(name string, things ...interface{}) string {
 		panic(err)
 	}
 	return u.Path
+}
+
+func Slugify(s string) string {
+	buf := make([]rune, 0, len(s))
+	dash := false
+	for _, r := range norm.NFKD.String(s) {
+		switch {
+		case unicode.IsOneOf(lat, r):
+			buf = append(buf, unicode.ToLower(r))
+			dash = true
+		case unicode.IsOneOf(nop, r):
+		case dash:
+			buf = append(buf, '-')
+			dash = false
+		}
+	}
+	if i := len(buf) - 1; i >= 0 && buf[i] == '-' {
+		buf = buf[:i]
+	}
+	return string(buf)
 }

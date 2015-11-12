@@ -22,18 +22,22 @@ package main
 
 import (
 	"crypto/sha1"
-	"errors"
+	// "errors"
 	"fmt"
-	"github.com/muesli/smartcrop"
+	// "github.com/muesli/smartcrop"
 	"gopkg.in/mgo.v2/bson"
 	"html/template"
 	"image"
+	_ "image/gif"
 	"image/jpeg"
+	_ "image/jpeg"
+	_ "image/png"
 	"io/ioutil"
 	"mime/multipart"
 	"net/http"
 	"os"
 	"path/filepath"
+	"runtime/debug"
 	"strings"
 	"time"
 )
@@ -67,11 +71,11 @@ func (post BlogPost) CanEdit(user User) bool {
 }
 
 func (post BlogPost) SlugUrl() string {
-	return strings.Join([]string{reverse("blog-index"), "read", post.Slug}, "/")
+	return strings.Join([]string{reverse("blog-read"), post.Slug}, "/")
 }
 
 func (post BlogPost) IdUrl() string {
-	return strings.Join([]string{reverse("blog-index"), "static", post.Id.Hex()}, "/")
+	return strings.Join([]string{reverse("blog-static"), post.Id.Hex()}, "/")
 }
 
 func (post BlogPost) GetAuthorAsUser() User {
@@ -95,6 +99,17 @@ func GetBlogPostWithId(id bson.ObjectId) (BlogPost, error) {
 	defer localsession.Close()
 	post := BlogPost{}
 	err := localsession.DB(database).C("blogs").Find(bson.M{"_id": id}).One(&post)
+	if err != nil {
+		return post, err
+	}
+	return post, nil
+}
+
+func GetBlogPostWithSlug(slug string) (BlogPost, error) {
+	localsession := session.Copy()
+	defer localsession.Close()
+	post := BlogPost{}
+	err := localsession.DB(database).C("blogs").Find(bson.M{"slug": slug}).One(&post)
 	if err != nil {
 		return post, err
 	}
@@ -167,6 +182,8 @@ func CreateBlog(img multipart.File, imageHeader *multipart.FileHeader, w http.Re
 
 	imgContent, err := ioutil.ReadAll(img)
 	if err != nil {
+		debug.PrintStack()
+		log.Error(err.Error())
 		return blog, err
 	}
 	defer img.Close()
@@ -177,8 +194,24 @@ func CreateBlog(img multipart.File, imageHeader *multipart.FileHeader, w http.Re
 
 	os.MkdirAll(imageFolder, os.ModeDir)
 
-	srcimage, _, err := image.Decode(img)
+	err = ioutil.WriteFile(imageFolder+imgsha1+imageHeader.Filename, imgContent, 0664)
 	if err != nil {
+		debug.PrintStack()
+		log.Error(err.Error())
+		return blog, err
+	}
+
+	diskimg, err := os.Open(imageFolder + imgsha1 + imageHeader.Filename)
+	if err != nil {
+		debug.PrintStack()
+		log.Error(err.Error())
+		return blog, err
+	}
+
+	srcimage, _, err := image.Decode(diskimg)
+	if err != nil {
+		debug.PrintStack()
+		log.Error(err.Error())
 		return blog, err
 	}
 
@@ -186,32 +219,32 @@ func CreateBlog(img multipart.File, imageHeader *multipart.FileHeader, w http.Re
 	WriteJpegImageToFile(imageFolder+imgsha1+".original.85.jpg", 85, srcimage)
 	WriteJpegImageToFile(imageFolder+imgsha1+".original.65.jpg", 65, srcimage)
 
-	analyzer := smartcrop.NewAnalyzer()
-	wideCrop, err := analyzer.FindBestCrop(srcimage, 1568, 588)
-	if err != nil {
-		return blog, err
-	}
-
-	posterCrop, err := analyzer.FindBestCrop(srcimage, 478, 388)
-	if err != nil {
-		return blog, err
-	}
-
-	sub, ok := img.(SubImager)
-	if ok {
-		wide := sub.SubImage(image.Rect(wideCrop.X, wideCrop.Y, wideCrop.Width+wideCrop.X, wideCrop.Height+wideCrop.Y))
-		poster := sub.SubImage(image.Rect(posterCrop.X, posterCrop.Y, posterCrop.Width+posterCrop.X, posterCrop.Height+posterCrop.Y))
-
-		WriteJpegImageToFile(imageFolder+imgsha1+".1568x588.100.jpg", 100, wide)
-		WriteJpegImageToFile(imageFolder+imgsha1+".1568x588.85.jpg", 85, wide)
-		WriteJpegImageToFile(imageFolder+imgsha1+".1568x588.65.jpg", 65, wide)
-
-		WriteJpegImageToFile(imageFolder+imgsha1+".478x388.100.jpg", 100, poster)
-		WriteJpegImageToFile(imageFolder+imgsha1+".478x388.85.jpg", 85, poster)
-		WriteJpegImageToFile(imageFolder+imgsha1+".478x388.65.jpg", 65, poster)
-	} else {
-		return blog, errors.New("No Subimage support")
-	}
+	// analyzer := smartcrop.NewAnalyzer()
+	// wideCrop, err := analyzer.FindBestCrop(srcimage, 1568, 588)
+	// if err != nil {
+	// 	return blog, err
+	// }
+	//
+	// posterCrop, err := analyzer.FindBestCrop(srcimage, 478, 388)
+	// if err != nil {
+	// 	return blog, err
+	// }
+	//
+	// sub, ok := img.(SubImager)
+	// if ok {
+	// 	wide := sub.SubImage(image.Rect(wideCrop.X, wideCrop.Y, wideCrop.Width+wideCrop.X, wideCrop.Height+wideCrop.Y))
+	// 	poster := sub.SubImage(image.Rect(posterCrop.X, posterCrop.Y, posterCrop.Width+posterCrop.X, posterCrop.Height+posterCrop.Y))
+	//
+	// 	WriteJpegImageToFile(imageFolder+imgsha1+".1568x588.100.jpg", 100, wide)
+	// 	WriteJpegImageToFile(imageFolder+imgsha1+".1568x588.85.jpg", 85, wide)
+	// 	WriteJpegImageToFile(imageFolder+imgsha1+".1568x588.65.jpg", 65, wide)
+	//
+	// 	WriteJpegImageToFile(imageFolder+imgsha1+".478x388.100.jpg", 100, poster)
+	// 	WriteJpegImageToFile(imageFolder+imgsha1+".478x388.85.jpg", 85, poster)
+	// 	WriteJpegImageToFile(imageFolder+imgsha1+".478x388.65.jpg", 65, poster)
+	// } else {
+	// 	return blog, errors.New("No Subimage support")
+	// }
 
 	images := []string{
 		"/assets/img/blog/" + id.Hex() + "/" + imgsha1 + ".original.100.jpg",
@@ -235,6 +268,17 @@ func CreateBlog(img multipart.File, imageHeader *multipart.FileHeader, w http.Re
 	blog.Edited = false
 	blog.DateEdited = editdate
 	blog.Images = images
+	blog.Slug = Slugify(blog.Title)
+
+	localsession := session.Copy()
+	defer localsession.Close()
+
+	err = localsession.DB(database).C("blogs").Insert(blog)
+	if err != nil {
+		debug.PrintStack()
+		log.Error(err.Error())
+		return blog, err
+	}
 
 	return blog, nil
 }
@@ -247,6 +291,8 @@ func WriteJpegImageToFile(path string, quality int, img image.Image) error {
 
 	file, err := os.Create(path)
 	if err != nil {
+		debug.PrintStack()
+		log.Error(err.Error())
 		return err
 	}
 	defer file.Close()
