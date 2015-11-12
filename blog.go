@@ -22,9 +22,9 @@ package main
 
 import (
 	"crypto/sha1"
-	// "errors"
+	"errors"
 	"fmt"
-	// "github.com/muesli/smartcrop"
+	"github.com/muesli/smartcrop"
 	"gopkg.in/mgo.v2/bson"
 	"html/template"
 	"image"
@@ -219,32 +219,32 @@ func CreateBlog(img multipart.File, imageHeader *multipart.FileHeader, w http.Re
 	WriteJpegImageToFile(imageFolder+imgsha1+".original.85.jpg", 85, srcimage)
 	WriteJpegImageToFile(imageFolder+imgsha1+".original.65.jpg", 65, srcimage)
 
-	// analyzer := smartcrop.NewAnalyzer()
-	// wideCrop, err := analyzer.FindBestCrop(srcimage, 1568, 588)
-	// if err != nil {
-	// 	return blog, err
-	// }
-	//
-	// posterCrop, err := analyzer.FindBestCrop(srcimage, 478, 388)
-	// if err != nil {
-	// 	return blog, err
-	// }
-	//
-	// sub, ok := img.(SubImager)
-	// if ok {
-	// 	wide := sub.SubImage(image.Rect(wideCrop.X, wideCrop.Y, wideCrop.Width+wideCrop.X, wideCrop.Height+wideCrop.Y))
-	// 	poster := sub.SubImage(image.Rect(posterCrop.X, posterCrop.Y, posterCrop.Width+posterCrop.X, posterCrop.Height+posterCrop.Y))
-	//
-	// 	WriteJpegImageToFile(imageFolder+imgsha1+".1568x588.100.jpg", 100, wide)
-	// 	WriteJpegImageToFile(imageFolder+imgsha1+".1568x588.85.jpg", 85, wide)
-	// 	WriteJpegImageToFile(imageFolder+imgsha1+".1568x588.65.jpg", 65, wide)
-	//
-	// 	WriteJpegImageToFile(imageFolder+imgsha1+".478x388.100.jpg", 100, poster)
-	// 	WriteJpegImageToFile(imageFolder+imgsha1+".478x388.85.jpg", 85, poster)
-	// 	WriteJpegImageToFile(imageFolder+imgsha1+".478x388.65.jpg", 65, poster)
-	// } else {
-	// 	return blog, errors.New("No Subimage support")
-	// }
+	analyzer := smartcrop.NewAnalyzer()
+	wideCrop, err := analyzer.FindBestCrop(srcimage, 1568, 588)
+	if err != nil {
+		return blog, err
+	}
+
+	posterCrop, err := analyzer.FindBestCrop(srcimage, 478, 388)
+	if err != nil {
+		return blog, err
+	}
+
+	sub, ok := img.(SubImager)
+	if ok {
+		wide := sub.SubImage(image.Rect(wideCrop.X, wideCrop.Y, wideCrop.Width+wideCrop.X, wideCrop.Height+wideCrop.Y))
+		poster := sub.SubImage(image.Rect(posterCrop.X, posterCrop.Y, posterCrop.Width+posterCrop.X, posterCrop.Height+posterCrop.Y))
+
+		WriteJpegImageToFile(imageFolder+imgsha1+".1568x588.100.jpg", 100, wide)
+		WriteJpegImageToFile(imageFolder+imgsha1+".1568x588.85.jpg", 85, wide)
+		WriteJpegImageToFile(imageFolder+imgsha1+".1568x588.65.jpg", 65, wide)
+
+		WriteJpegImageToFile(imageFolder+imgsha1+".478x388.100.jpg", 100, poster)
+		WriteJpegImageToFile(imageFolder+imgsha1+".478x388.85.jpg", 85, poster)
+		WriteJpegImageToFile(imageFolder+imgsha1+".478x388.65.jpg", 65, poster)
+	} else {
+		return blog, errors.New("No Subimage support")
+	}
 
 	images := []string{
 		"/assets/img/blog/" + id.Hex() + "/" + imgsha1 + ".original.100.jpg",
