@@ -1,5 +1,5 @@
 body .site {
-  font-family: 'Roboto', 'Helvetica', sans-serif;
+  font-family: 'Lato', 'Helvetica', sans-serif;
 }
 
 .site-posts {
@@ -37,4 +37,8 @@ textarea {
   display: block;
   max-width: 100%;
   height: auto;
+}
+
+.mdl-mini-footer {
+  padding: 10px 16px;
 }
