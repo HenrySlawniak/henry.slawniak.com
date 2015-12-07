@@ -42,3 +42,9 @@ textarea {
 .mdl-mini-footer {
   padding: 10px 16px;
 }
+
+.mdl-card__actions {
+  background-color: #fff;
+  position: absolute;
+  bottom: 0;
+}

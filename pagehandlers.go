@@ -26,7 +26,8 @@ import (
 
 func IndexPageHandler(w http.ResponseWriter, req *http.Request, ctx *Context, pjax bool) (err error) {
 	return T("pages/index.html", pjax).Execute(w, map[string]interface{}{
-		"ctx": ctx,
+		"ctx":   ctx,
+		"blogs": GetBlogs(6, 0),
 	})
 }
 

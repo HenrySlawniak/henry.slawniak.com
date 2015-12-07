@@ -46,6 +46,30 @@ ul .no-decoration {
       <small>I even work for free ;)</small>
     </div>
   </div>
+  <div class="mdl-card mdl-cell mdl-cell--12-col mdl-shadow--2dp">
+    <div class="mdl-card__title">
+      <h4 class="mdl-card__title-text">Recent Blog Posts</h4>
+    </div>
+    <div class="mdl-card__supporting-text">
+      <div class="mdl-grid">
+        {{ range $blog := .blogs }}
+        {{ $author := $blog.GetAuthorAsUser }}
+        <div class="mdl-card mdl-cell mdl-cell--4-col mdl-shadow--2dp">
+          <div class="mdl-card__title" style="background: url('{{index $blog.Images 2 }}') center / cover;height:160px;">
+            <h4 class="mdl-card__title-text" style="color:white">{{ $blog.Title }}</h4>
+          </div>
+          <div class="mdl-card__supporting-text">
+            {{ $blog.Summary }}
+          </div>
+          <div class="mdl-card__actions mdl-card--border">
+            <a href="{{ $blog.IdUrl }}" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">Read More</a>
+            {{ $blog.Date | ftimeago }}
+          </div>
+        </div>
+        {{ end }}
+      </div>
+    </div>
+  </div>
 </section>
 {{ end }}
 {{ define "js" }}{{ end }}

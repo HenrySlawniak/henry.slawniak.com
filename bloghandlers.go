@@ -29,7 +29,7 @@ import (
 func BlogIndexHandler(w http.ResponseWriter, req *http.Request, ctx *Context, pjax bool) (err error) {
 	return T("pages/blog/index.html", pjax).Execute(w, map[string]interface{}{
 		"ctx":   ctx,
-		"blogs": GetBlogsCrono(50, 0),
+		"blogs": GetBlogs(50, 0),
 	})
 }
 
