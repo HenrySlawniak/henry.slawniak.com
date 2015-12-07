@@ -201,7 +201,7 @@ func CreateBlog(img multipart.File, imageHeader *multipart.FileHeader, w http.Re
 
 	imageFolder := "./static/img/blog/" + id.Hex() + "/"
 
-	os.MkdirAll(imageFolder, os.ModeDir)
+	os.MkdirAll(imageFolder, 0777)
 
 	err = ioutil.WriteFile(imageFolder+imgsha1+imageHeader.Filename, imgContent, 0664)
 	if err != nil {
