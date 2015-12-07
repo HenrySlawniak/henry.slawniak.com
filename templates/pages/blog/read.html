@@ -7,8 +7,8 @@
   <div class="mdl-card mdl-cell mdl-cell--12-col">
     <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
       <div>
-        <strong>{{ .post.Title }}</strong>
-        <span>{{ .post.Date | ftimeago }}</span>
+        <h1>{{ .post.Title }}</h1>
+        <span>{{ .post.Date | ftimeago }}</span> by: {{ .post.GetAuthorAsUser.DisplayName }}
       </div>
     </div>
     <div class="mdl-color-text--grey-700 mdl-card__supporting-text">

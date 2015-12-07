@@ -27,7 +27,10 @@ import (
 )
 
 func BlogIndexHandler(w http.ResponseWriter, req *http.Request, ctx *Context, pjax bool) (err error) {
-	return nil
+	return T("pages/blog/index.html", pjax).Execute(w, map[string]interface{}{
+		"ctx":   ctx,
+		"blogs": GetBlogsCrono(50, 0),
+	})
 }
 
 func BlogWriteFormHandler(w http.ResponseWriter, req *http.Request, ctx *Context, pjax bool) (err error) {
@@ -83,7 +86,7 @@ func BlogWriteHandler(w http.ResponseWriter, req *http.Request, ctx *Context, pj
 		return BlogWriteFormHandler(w, req, ctx, pjax)
 	}
 
-	blog, err := CreateBlog(file, header, w, req, ctx, pjax)
+	blog, err := CreateBlog(file, header, w, req, ctx)
 	if err != nil {
 		ctx.Session.AddFlash(err.Error())
 		return BlogWriteFormHandler(w, req, ctx, pjax)

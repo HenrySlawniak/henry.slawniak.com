@@ -23,6 +23,8 @@ package main
 import (
 	"crypto/sha1"
 	"fmt"
+	"github.com/microcosm-cc/bluemonday"
+	"github.com/russross/blackfriday"
 	"gopkg.in/mgo.v2/bson"
 	"html/template"
 	"image"
@@ -30,6 +32,7 @@ import (
 	_ "image/jpeg"
 	_ "image/png"
 	"io/ioutil"
+	"math/rand"
 	"mime/multipart"
 	"net/http"
 	"os"
@@ -50,10 +53,20 @@ type BlogPost struct {
 	DateEdited time.Time
 	EditedBy   bson.ObjectId `bson:"_editor"`
 	Images     []string
+	Width      int
 }
 
 type SubImager interface {
 	SubImage(r image.Rectangle) image.Image
+}
+
+func (post BlogPost) Summary() template.HTML {
+	bytes := []byte(string(post.Source))
+	if len(bytes) < 256 {
+		return template.HTML(bluemonday.StrictPolicy().SanitizeBytes(blackfriday.MarkdownCommon(bytes)))
+	}
+	trimmed := bytes[0:256]
+	return template.HTML(bluemonday.StrictPolicy().SanitizeBytes(blackfriday.MarkdownCommon(trimmed)))
 }
 
 func (post BlogPost) Store() {
@@ -164,7 +177,7 @@ func GetBlogsCrono(count int, page int) []BlogPost {
 	return blogs
 }
 
-func CreateBlog(img multipart.File, imageHeader *multipart.FileHeader, w http.ResponseWriter, req *http.Request, ctx *Context, pjax bool) (BlogPost, error) {
+func CreateBlog(img multipart.File, imageHeader *multipart.FileHeader, w http.ResponseWriter, req *http.Request, ctx *Context) (BlogPost, error) {
 	blog := BlogPost{}
 
 	id := bson.NewObjectId()
@@ -233,6 +246,8 @@ func CreateBlog(img multipart.File, imageHeader *multipart.FileHeader, w http.Re
 	blog.DateEdited = editdate
 	blog.Images = images
 	blog.Slug = Slugify(blog.Date.Format("Jan-02-2006-3:04PM") + "-" + blog.Title)
+	rand.Seed(time.Now().UnixNano())
+	blog.Width = rand.Intn(9) + 1
 
 	localsession := session.Copy()
 	defer localsession.Close()
