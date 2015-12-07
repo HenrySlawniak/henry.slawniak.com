@@ -19,7 +19,13 @@
 <meta name="twitter:url" content="https://{{ .ctx.Site.Domain }}{{ .post.IdUrl }}/" />
 <meta name="twitter:description" content="{{ .post.Summary }}"/><!-- Sketchy to use summary... -->
 {{ end }}
-{{ define "css" }}{{ end }}
+{{ define "css" }}
+<style>
+body::before {
+  background: url('{{index .post.Images 2 }}') center / cover;
+}
+</style>
+{{ end }}
 {{ define "js" }}{{ end }}
 {{ define "content" }}
 <section class="section__center mdl-grid mdl-grid__no-spacing">
