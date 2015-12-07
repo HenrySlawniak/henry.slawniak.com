@@ -12,8 +12,11 @@
   </div>
 </header>
 <div class="mdl-layout__drawer">
-  <span class="mdl-layout-title">User Actions</span>
+  <span class="mdl-layout-title">Links</span>
   <nav class="mdl-navigation">
+    <a class="mdl-navigation__link" href="{{ reverse "index" }}">Home</a>
+    <a class="mdl-navigation__link" href="{{ reverse "bio" }}">Bio</a>
+    <a class="mdl-navigation__link" href="{{ reverse "blog" }}">Blog</a>
     {{ if .ctx.User }}
     <a class="mdl-navigation__link" href="{{ reverse "logout" }}">Logout</a>
     {{ else }}
