@@ -23,11 +23,14 @@ package main
 import (
 	"fmt"
 	"golang.org/x/text/unicode/norm"
+	"image"
+	"image/jpeg"
+	"os"
+	"path/filepath"
 	"unicode"
 )
 
 var lat = []*unicode.RangeTable{unicode.Letter, unicode.Number}
-var nop = []*unicode.RangeTable{unicode.Mark, unicode.Sk, unicode.Lm}
 
 func reverse(name string, things ...interface{}) string {
 	//convert the things to strings
@@ -51,7 +54,6 @@ func Slugify(s string) string {
 		case unicode.IsOneOf(lat, r):
 			buf = append(buf, unicode.ToLower(r))
 			dash = true
-		case unicode.IsOneOf(nop, r):
 		case dash:
 			buf = append(buf, '-')
 			dash = false
@@ -61,4 +63,19 @@ func Slugify(s string) string {
 		buf = buf[:i]
 	}
 	return string(buf)
+}
+
+func WriteJpegImageToFile(path string, quality int, img image.Image) error {
+	err := os.MkdirAll(filepath.Dir(path), os.ModeDir)
+	if err != nil {
+		return err
+	}
+
+	file, err := os.Create(path)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	return jpeg.Encode(file, img, &jpeg.Options{Quality: quality})
 }

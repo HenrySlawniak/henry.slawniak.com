@@ -1,32 +1,43 @@
 {{ define "title" }}Index{{ end }}
 {{ define "head" }}{{ end }}
-{{ define "css" }}{{ end }}
-{{ define "js" }}{{ end }}
+{{ define "css" }}
+<style>
+.avatar-img {
+  border: 0;
+  vertical-align: middle;
+}
+
+li .material-icons {
+  border: 0;
+  vertical-align: middle;
+}
+
+ul .no-decoration {
+  list-style-type: none;
+  padding: 5px;
+}
+</style>
+{{ end }}
 {{ define "content" }}
 <section class="section__center mdl-grid mdl-grid__no-spacing">
-  <div class="mdl-card mdl-cell mdl-cell--8-col">
+  <div class="mdl-card mdl-cell mdl-cell--7-col mdl-shadow--4dp">
+    <div class="mdl-card__title">
+      <h1 class="mdl-card__title-text">Welcome to my site!</h1>
+    </div>
     <div class="mdl-card__supporting-text">
-      <h4>Welcome to my site</h4>
-      Dolore ex deserunt aute fugiat aute nulla ea sunt aliqua nisi cupidatat eu. Nostrud in laboris labore nisi amet do dolor eu fugiat consectetur elit cillum esse.
+      <p>My name is Henry Slawniak. I've been obsessed with technology from a young age, and love to share it with people.</p>
+      <p>On this site, you can find <a href="{{ reverse "bio" }}">information about me</a>, and at some point a <a href="{{ reverse "blog" }}">blog</a></p>
     </div>
   </div>
-  <div class="mdl-card mdl-cell mdl-cell--4-col">
-    <div class="mdl-card__supporting-text">
-      <h4>Welcome to my site</h4>
-      Dolore ex deserunt aute fugiat aute nulla ea sunt aliqua nisi cupidatat eu. Nostrud in laboris labore nisi amet do dolor eu fugiat consectetur elit cillum esse.
+  <div class="mdl-card mdl-cell mdl-cell--5-col mdl-shadow--4dp">
+    <div class="mdl-card__title">
+      <h4 class="mdl-card__title-text">Freelance Work</h4>
     </div>
-  </div>
-  <div class="mdl-card mdl-cell mdl-cell--2-col">
     <div class="mdl-card__supporting-text">
-      <h4>Welcome to my site</h4>
-      Dolore ex deserunt aute fugiat aute nulla ea sunt aliqua nisi cupidatat eu. Nostrud in laboris labore nisi amet do dolor eu fugiat consectetur elit cillum esse.
-    </div>
-  </div>
-  <div class="mdl-card mdl-cell mdl-cell--10-col">
-    <div class="mdl-card__supporting-text">
-      <h4>Welcome to my site</h4>
-      Dolore ex deserunt aute fugiat aute nulla ea sunt aliqua nisi cupidatat eu. Nostrud in laboris labore nisi amet do dolor eu fugiat consectetur elit cillum esse.
+      <p>As stated before, I love technology, and getting my hands into as many systems as possible fuels that hunger.</p>
+      <p>So if you need any kind of technical work, from web development, software troubleshooting, setting up a game server, or whatever you can think of, contact me! (details on the <a href="{{ reverse "bio" }}">bio page</a>)</p>
     </div>
   </div>
 </section>
 {{ end }}
+{{ define "js" }}{{ end }}

@@ -1,9 +1,202 @@
 {{ define "title" }}Index{{ end }}
 {{ define "head" }}{{ end }}
-{{ define "css" }}{{ end }}
-{{ define "js" }}{{ end }}
+{{ define "css" }}
+<style>
+.avatar-img {
+  border: 0;
+  vertical-align: middle;
+}
+
+li .material-icons {
+  border: 0;
+  vertical-align: middle;
+}
+
+ul .no-decoration {
+  list-style-type: none;
+  padding: 5px;
+}
+</style>
+{{ end }}
 {{ define "content" }}
-<section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
-  
+<section class="section__center mdl-grid mdl-grid__no-spacing">
+  <div class="mdl-card mdl-cell mdl-cell--6-col mdl-shadow--4dp">
+    <div class="mdl-card__title">
+      <div class="mdl-grid">
+        <div class="mdl-cell mdl-cell--8-col">
+          <h2 class="mdl-card__title-text">Henry Slawniak</h2>
+        </div>
+        <div class="mdl-cell mdl-cell--4-col">
+          <img src="https://avatars2.githubusercontent.com/u/585704?v=3" class="avatar-img img-circle mdl-shadow--6dp" style="width:100%;" />
+        </div>
+      </div>
+    </div>
+    <div class="mdl-card__supporting-text">
+      <h6>Software Engineer / Aspiring Network Engineer</h6>
+    </div>
+  </div>
+  <div class="mdl-card mdl-cell mdl-cell--6-col mdl-shadow--4dp">
+    <div class="mdl-card__title">
+      <h7 class="mdl-card__title-text">Contact</h7>
+    </div>
+    <div class="mdl-card__supporting-text">
+      <ul class="no-decoration">
+        <li class="no-decoration"><i class="material-icons">location_city</i> Chicago, IL</li>
+        <li class="no-decoration"><i class="material-icons">mail</i> <a href="mailto:henry@slawniak.com">henry@slawniak.com</a></li>
+        <li class="no-decoration"><i class="material-icons">person</i> <a href="https://github.com/HenrySlawniak">Github</a> <a href="https://twitter.com/meggavolts">Twitter</a>, <a href="https://plus.google.com/+HenrySlawniak">G+</a>, <a href="https://www.linkedin.com/in/henryslawniak">LinkedIn</a></li>
+        <li class="no-decoration"><i class="material-icons">public</i> <a href="https://slawniak.com">slawniak.com</a>, <a href="https://justkindatired.com">justkindatired.com</a>, <a href="https://fortkickass.co">fortkickass.co</a>, <a href="https://mcme.co">mcme.co</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="mdl-card mdl-cell mdl-cell--12-col mdl-shadow--4dp">
+    <div class="mdl-card__title">
+      <h2 class="mdl-card__title-text">Skills</h2>
+    </div>
+    <div class="mdl-card__supporting-text">
+      <div class="mdl-grid">
+        <div class="mdl-card mdl-cell mdl-cell--4-col mdl-shadow--2dp">
+          <div class="mdl-card__title">
+            <h6>Programming Languages</h6>
+          </div>
+          <ul>
+            <li>Go</li>
+            <li>Java</li>
+            <li>PHP</li>
+            <li>Javascript</li>
+          </ul>
+        </div>
+        <div class="mdl-card mdl-cell mdl-cell--4-col mdl-shadow--2dp">
+          <div class="mdl-card__title">
+            <h6>Markup Languages</h6>
+          </div>
+          <ul>
+            <li>HTML</li>
+            <li>Markdown</li>
+            <li>XML</li>
+          </ul>
+        </div>
+        <div class="mdl-card mdl-cell mdl-cell--4-col mdl-shadow--2dp">
+          <div class="mdl-card__title">
+            <h6>Build Tools</h6>
+          </div>
+          <ul>
+            <li>Maven</li>
+            <li>Gradle</li>
+            <li>Go Tools</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mdl-card mdl-cell mdl-cell--12-col mdl-shadow--4dp">
+    <div class="mdl-card__title">
+      <h2 class="mdl-card__title-text">Certifications</h2>
+    </div>
+    <div class="mdl-card__supporting-text">
+      <div class="mdl-grid">
+        <div class="mdl-card mdl-cell mdl-cell--6-col mdl-shadow--2dp" id="net-plus-card">
+          <div class="mdl-card__title">
+            <h6 class="mdl-card__title-text">CompTIA <a href="https://www.certmetrics.com/comptia/public/verification.aspx?code=XDB8WDYG1PBEY0PW">Network+</a></h6>
+          </div>
+          <div class="mdl-card__supporting-text">
+            August 2015 - Present
+          </div>
+        </div>
+        <div class="mdl-card mdl-cell mdl-cell--6-col mdl-shadow--2dp" id="serv-plus-card">
+          <div class="mdl-card__title">
+            <h6 class="mdl-card__title-text">CompTIA <a href="https://www.certmetrics.com/comptia/public/verification.aspx?code=2QGVDV732G1EKZ53">Server+</a></h6>
+          </div>
+          <div class="mdl-card__supporting-text">
+            April 2015 - Present
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mdl-card mdl-cell mdl-cell--12-col mdl-shadow--4dp">
+    <div class="mdl-card__title">
+      <h2 class="mdl-card__title-text">Open Source Software</h2>
+    </div>
+    <div class="mdl-card__supporting-text">
+      I write a lot of open source software, it all lives on <a href="https://github.com/HenrySlawniak?tab=repositories">Github</a>.
+      <div class="mdl-grid" id="repo-grid">
+      </div>
+    </div>
+  </div>
 </section>
+{{ end }}
+{{ define "js" }}
+<script>
+document.addEventListener("DOMContentLoaded", function(event) {
+  function sortReposByUpdateTime(a, b) {
+    aDate = new Date(a['pushed_at']);
+    bDate = new Date(b['pushed_at']);
+    return bDate - aDate;
+  }
+
+  function doGithubAPIShiznit() {
+    userDat = getJSON("https://api.github.com/users/HenrySlawniak")
+    data = getJSON(userDat["repos_url"])
+    var repos = [];
+    data.forEach(function(repo) {
+      if (repo["name"] == "fortkickass.co") {
+        repo["language"] = "Go";
+      }
+      repos.push(repo)
+    });
+    repos.sort(sortReposByUpdateTime);
+    count = 0;
+    repos.forEach(function(repo) {
+      count++;
+      elem = document.createElement("div");
+      elem.classList.add("mdl-card");
+      elem.classList.add("mdl-cell");
+      elem.classList.add("mdl-cell--6-col");
+      elem.classList.add("mdl-shadow--2dp");
+
+      title = document.createElement("div");
+      title.classList.add("mdl-card__title");
+
+      h5 = document.createElement("h5");
+      h5.classList.add("mdl-card__title-text");
+      link = document.createElement("a")
+      link.href = repo["html_url"]
+      link.target = "_blank"
+      link.appendChild(document.createTextNode(repo["name"]))
+      h5.appendChild(link)
+
+      title.appendChild(h5);
+      elem.appendChild(title);
+
+      supporting = document.createElement("div");
+      supporting.classList.add("mdl-card__supporting-text");
+      supporting.appendChild(document.createTextNode(repo["description"]));
+
+      elem.appendChild(supporting);
+      if (count > 25) {
+        return true;
+      }
+      document.getElementById("repo-grid").appendChild(elem);
+    });
+  }
+
+  function getJSON(url) {
+    var request  = new XMLHttpRequest();
+    request.open("GET", url, false)
+    request.send(null);
+
+    if (request.status === 200) {
+      return JSON.parse(request.responseText);
+    }
+  }
+
+  function getRandomWidth() {
+    width = Math.ceil(5 + Math.random() * (7 - 5));
+    console.log(width)
+    return width
+  }
+
+  window.requestIdleCallback(doGithubAPIShiznit);
+});
+</script>
 {{ end }}

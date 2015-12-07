@@ -22,21 +22,17 @@ package main
 
 import (
 	"crypto/sha1"
-	"errors"
 	"fmt"
-	"github.com/muesli/smartcrop"
 	"gopkg.in/mgo.v2/bson"
 	"html/template"
 	"image"
 	_ "image/gif"
-	"image/jpeg"
 	_ "image/jpeg"
 	_ "image/png"
 	"io/ioutil"
 	"mime/multipart"
 	"net/http"
 	"os"
-	"path/filepath"
 	"runtime/debug"
 	"strings"
 	"time"
@@ -219,43 +215,11 @@ func CreateBlog(img multipart.File, imageHeader *multipart.FileHeader, w http.Re
 	WriteJpegImageToFile(imageFolder+imgsha1+".original.85.jpg", 85, srcimage)
 	WriteJpegImageToFile(imageFolder+imgsha1+".original.65.jpg", 65, srcimage)
 
-	analyzer := smartcrop.NewAnalyzer()
-	wideCrop, err := analyzer.FindBestCrop(srcimage, 1568, 588)
-	if err != nil {
-		return blog, err
-	}
-
-	posterCrop, err := analyzer.FindBestCrop(srcimage, 478, 388)
-	if err != nil {
-		return blog, err
-	}
-
-	sub, ok := img.(SubImager)
-	if ok {
-		wide := sub.SubImage(image.Rect(wideCrop.X, wideCrop.Y, wideCrop.Width+wideCrop.X, wideCrop.Height+wideCrop.Y))
-		poster := sub.SubImage(image.Rect(posterCrop.X, posterCrop.Y, posterCrop.Width+posterCrop.X, posterCrop.Height+posterCrop.Y))
-
-		WriteJpegImageToFile(imageFolder+imgsha1+".1568x588.100.jpg", 100, wide)
-		WriteJpegImageToFile(imageFolder+imgsha1+".1568x588.85.jpg", 85, wide)
-		WriteJpegImageToFile(imageFolder+imgsha1+".1568x588.65.jpg", 65, wide)
-
-		WriteJpegImageToFile(imageFolder+imgsha1+".478x388.100.jpg", 100, poster)
-		WriteJpegImageToFile(imageFolder+imgsha1+".478x388.85.jpg", 85, poster)
-		WriteJpegImageToFile(imageFolder+imgsha1+".478x388.65.jpg", 65, poster)
-	} else {
-		return blog, errors.New("No Subimage support")
-	}
-
 	images := []string{
+		"/assets/img/blog/" + id.Hex() + "/" + imgsha1 + imageHeader.Filename,
 		"/assets/img/blog/" + id.Hex() + "/" + imgsha1 + ".original.100.jpg",
 		"/assets/img/blog/" + id.Hex() + "/" + imgsha1 + ".original.85.jpg",
 		"/assets/img/blog/" + id.Hex() + "/" + imgsha1 + ".original.65.jpg",
-		"/assets/img/blog/" + id.Hex() + "/" + imgsha1 + ".1568x588.100.jpg",
-		"/assets/img/blog/" + id.Hex() + "/" + imgsha1 + ".1568x588.85.jpg",
-		"/assets/img/blog/" + id.Hex() + "/" + imgsha1 + ".1568x588.65.jpg",
-		"/assets/img/blog/" + id.Hex() + "/" + imgsha1 + ".478x388.100.jpg",
-		"/assets/img/blog/" + id.Hex() + "/" + imgsha1 + ".478x388.85.jpg",
-		"/assets/img/blog/" + id.Hex() + "/" + imgsha1 + ".478x388.65.jpg",
 	}
 
 	blog.Id = id
@@ -268,7 +232,7 @@ func CreateBlog(img multipart.File, imageHeader *multipart.FileHeader, w http.Re
 	blog.Edited = false
 	blog.DateEdited = editdate
 	blog.Images = images
-	blog.Slug = Slugify(blog.Title)
+	blog.Slug = Slugify(blog.Date.Format("Jan-02-2006-3:04PM") + "-" + blog.Title)
 
 	localsession := session.Copy()
 	defer localsession.Close()
@@ -281,21 +245,4 @@ func CreateBlog(img multipart.File, imageHeader *multipart.FileHeader, w http.Re
 	}
 
 	return blog, nil
-}
-
-func WriteJpegImageToFile(path string, quality int, img image.Image) error {
-	err := os.MkdirAll(filepath.Dir(path), os.ModeDir)
-	if err != nil {
-		return err
-	}
-
-	file, err := os.Create(path)
-	if err != nil {
-		debug.PrintStack()
-		log.Error(err.Error())
-		return err
-	}
-	defer file.Close()
-
-	return jpeg.Encode(file, img, &jpeg.Options{Quality: quality})
 }
