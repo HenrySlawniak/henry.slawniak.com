@@ -1,0 +1,17 @@
+{{ define "title" }}{{ .post.Title }}{{ end }}
+{{ define "head" }}{{ end }}
+{{ define "css" }}{{ end }}
+{{ define "js" }}{{ end }}
+{{ define "content" }}
+<section class="section__center mdl-grid mdl-grid__no-spacing">
+  {{ range $blog := .blogs }}
+  {{ $author := $blog.GetAuthorAsUser }}
+  <div class="mdl-card mdl-cell mdl-cell--{{ $blog.Width }}-col">
+    <div class="mdl-card__supporting-text">
+      <h4>{{ $blog.Title }}</h4>
+      {{ $blog.Summary }}
+    </div>
+  </div>
+  {{ end }}
+</section>
+{{ end }}
