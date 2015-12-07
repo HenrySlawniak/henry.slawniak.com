@@ -151,9 +151,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
       repos.push(repo)
     });
     repos.sort(sortReposByUpdateTime);
-    count = 0;
+    document.getElementById("repo-grid").innerHTML = null;
     repos.forEach(function(repo) {
-      count++;
       elem = document.createElement("div");
       elem.classList.add("mdl-card");
       elem.classList.add("mdl-cell");
@@ -179,9 +178,28 @@ document.addEventListener("DOMContentLoaded", function(event) {
       supporting.appendChild(document.createTextNode(repo["description"]));
 
       elem.appendChild(supporting);
-      if (count > 25) {
-        return true;
+
+      actions = document.createElement("div");
+      actions.classList.add("mdl-card__actions");
+      actions.classList.add("mdl-card--border");
+
+      if (repo["language"] != null) {
+        actions.appendChild(document.createTextNode(repo["language"]));
       }
+
+      timeholder = document.createElement("div");
+      timeholder.style.float = "right";
+
+      time = new window.RelativeTimeElement();
+      time.setAttribute("datetime", repo["pushed_at"]);
+      time.setAttribute("format", "micro");
+
+      timeholder.appendChild(document.createTextNode("Last pushed: "));
+      timeholder.appendChild(time);
+      actions.appendChild(timeholder);
+
+      elem.appendChild(actions);
+
       document.getElementById("repo-grid").appendChild(elem);
     });
   }
