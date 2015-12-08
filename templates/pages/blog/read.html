@@ -13,8 +13,9 @@
 <meta property="article:modified_time" content="{{ .post.DateEdited | f8601 }}"/>
 {{ end }}
 
-<meta name="twitter:card" content="summary" />
+<meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="{{ .post.Title }}" />
+<meta name="twitter:site" content="@meggavolts" />
 <meta name="twitter:image" content="https://{{ .ctx.Site.Domain }}{{index .post.Images 2 }}" />
 <meta name="twitter:url" content="https://{{ .ctx.Site.Domain }}{{ .post.IdUrl }}/" />
 <meta name="twitter:description" content="{{ .post.Summary }}"/><!-- Sketchy to use summary... -->
