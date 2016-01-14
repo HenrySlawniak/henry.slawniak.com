@@ -37,7 +37,7 @@ body::before {
 {{ end }}
 {{ define "js" }}{{ end }}
 {{ define "content" }}
-<section class="section__center mdl-grid mdl-grid__no-spacing">
+<section class="section__center mdl-grid mdl-grid__no-spacing blog--post">
   <div class="mdl-card mdl-cell mdl-cell--12-col">
     <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
       <div>
@@ -48,9 +48,7 @@ body::before {
     <div class="mdl-color-text--grey-700 mdl-card__supporting-text" id="post-content">
       {{ .post.Content }}
     </div>
-  </div>
-  <div class="mdl-card mdl-cell mdl-cell--12-col">
-    <div class="mdl-color-text--grey-700 mdl-card__supporting-text">
+    <div class="mdl-color-text--primary-contrast mdl-card__supporting-text links">
       <div id="share-buttons">
         <div>
           <a href="{{ .post.IdUrl }}">Permalink</a>
