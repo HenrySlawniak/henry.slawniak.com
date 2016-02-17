@@ -94,6 +94,7 @@ func main() {
 	router.Path("/").Handler(handler(IndexPageHandler)).Name("index").Methods("GET")
 	router.Path("/bio").Handler(handler(BioPageHandler)).Name("bio").Methods("GET")
 	router.Path("/blog").Handler(handler(BlogIndexHandler)).Name("blog").Methods("GET")
+	router.Path("/clock").Handler(handler(ClockPageHandler)).Name("clock").Methods("GET")
 
 	router.Path("/blog/write").Handler(handler(BlogWriteFormHandler)).Name("blog-write").Methods("GET")
 	router.Path("/blog/write").Handler(handler(BlogWriteHandler)).Methods("POST")

@@ -128,7 +128,7 @@ func T(name string, pjax bool) *template.Template {
 		"templates/_base.html",
 		filepath.Join("templates", name),
 	))
-	cachedTemplates[name] = t
+	// cachedTemplates[name] = t
 
 	return t
 }

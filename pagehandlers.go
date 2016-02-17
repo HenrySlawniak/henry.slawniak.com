@@ -19,3 +19,9 @@ func BioPageHandler(w http.ResponseWriter, req *http.Request, ctx *Context, pjax
 		"ctx": ctx,
 	})
 }
+
+func ClockPageHandler(w http.ResponseWriter, req *http.Request, ctx *Context, pjax bool) (err error) {
+	return T("pages/clock.html", pjax).Execute(w, map[string]interface{}{
+		"ctx": ctx,
+	})
+}
