@@ -93,6 +93,7 @@ func main() {
 
 	router.Path("/").Handler(handler(IndexPageHandler)).Name("index").Methods("GET")
 	router.Path("/bio").Handler(handler(BioPageHandler)).Name("bio").Methods("GET")
+	router.Path("/sticker").Handler(handler(StickerPageHandler)).Name("sticker").Methods("GET")
 	router.Path("/blog").Handler(handler(BlogIndexHandler)).Name("blog").Methods("GET")
 	router.Path("/clock").Handler(handler(ClockPageHandler)).Name("clock").Methods("GET")
 
