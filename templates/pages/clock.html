@@ -6,25 +6,7 @@
 <meta property="og:url" content="https://{{ .ctx.Site.Domain }}/"/>
 <meta property="og:description" content="{{ .ctx.Site.Description }}"/>
 {{ end }}
-
-{{ define "css" }}
-<style>
-.avatar-img {
-  border: 0;
-  vertical-align: middle;
-}
-
-li .material-icons {
-  border: 0;
-  vertical-align: middle;
-}
-
-ul .no-decoration {
-  list-style-type: none;
-  padding: 5px;
-}
-</style>
-{{ end }}
+{{ define "css" }}{{ end }}
 {{ define "content" }}
 <section class="section__center mdl-grid mdl-grid__no-spacing">
   <div class="mdl-card mdl-cell mdl-grid mdl-cell--12-col">

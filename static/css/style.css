@@ -34,10 +34,25 @@ body::before {
   }
 }
 
+.avatar-img {
+  border: 0;
+  vertical-align: middle;
+}
+
+li .material-icons {
+  border: 0;
+  vertical-align: middle;
+}
+
+ul .no-decoration {
+  list-style-type: none;
+  padding: 5px;
+}
+
 .site-posts {
   max-width: 900px;
   padding: 0;
-  /*display: flex;*/
+  display: flex;
   width: 100%;
   margin: 0 auto;
   flex-shrink: 0;
@@ -72,7 +87,7 @@ textarea {
 }
 
 .mdl-mini-footer {
-  padding: 10px 16px;
+  padding-top: 15px;
 }
 
 .mdl-card__actions {
@@ -88,7 +103,7 @@ textarea {
   overflow: hidden;
   padding: 16px;
   width: 90%;
-}
+}*/
 
 .blog--post .mdl-card__supporting-text {
   width: 100%;
