@@ -4,9 +4,11 @@
 package main
 
 import (
+	"fmt"
 	"github.com/gorilla/mux"
 	"gopkg.in/mgo.v2/bson"
 	"net/http"
+	"runtime/debug"
 )
 
 func BlogIndexHandler(w http.ResponseWriter, req *http.Request, ctx *Context, pjax bool) (err error) {
@@ -34,6 +36,12 @@ func BlogReadHandler(w http.ResponseWriter, req *http.Request, ctx *Context, pja
 		return NotFoundHandler(w, req, ctx, pjax)
 	}
 
+	if !post.Published {
+		debug.PrintStack()
+		fmt.Println("blog: " + post.Title + " not published")
+		return NotFoundHandler(w, req, ctx, pjax)
+	}
+
 	return T("pages/blog/read.html", pjax).Execute(w, map[string]interface{}{
 		"ctx":  ctx,
 		"post": post,
@@ -48,6 +56,12 @@ func BlogStaticHandler(w http.ResponseWriter, req *http.Request, ctx *Context, p
 		realid := bson.ObjectIdHex(id)
 		post, err := GetBlogPostWithId(realid)
 		if err != nil {
+			return NotFoundHandler(w, req, ctx, pjax)
+		}
+
+		if !post.Published {
+			debug.PrintStack()
+			fmt.Println("blog: " + post.Title + " not published")
 			return NotFoundHandler(w, req, ctx, pjax)
 		}
 

@@ -37,6 +37,7 @@ type BlogPost struct {
 	EditedBy   bson.ObjectId `bson:"_editor"`
 	Images     []string
 	Width      int
+	Published  bool
 }
 
 type SubImager interface {
@@ -111,7 +112,7 @@ func GetBlogPostWithSlug(slug string) (BlogPost, error) {
 func GetBlogsByAuthor(user *User) (posts []BlogPost, err error) {
 	localsession := session.Copy()
 	defer localsession.Close()
-	err = localsession.DB(database).C("blogs").Find(bson.M{"_author": user.Id}).Sort("-date").All(&posts)
+	err = localsession.DB(database).C("blogs").Find(bson.M{"_author": user.Id, "published": true}).Sort("-date").All(&posts)
 	return
 }
 
@@ -129,7 +130,7 @@ func GetBlogPost(slug string) (BlogPost, error) {
 func CountBlogs() int {
 	localsession := session.Copy()
 	defer localsession.Close()
-	count, err := localsession.DB(database).C("blogs").Count()
+	count, err := localsession.DB(database).C("blogs").Find(bson.M{"published": true}).Count()
 	if err != nil {
 		return 0
 	}
@@ -144,7 +145,7 @@ func GetBlogs(count int, page int) []BlogPost {
 		offset = (page - 1) * count
 	}
 	blogs := []BlogPost{}
-	localsession.DB(database).C("blogs").Find(bson.M{}).Sort("-date").Skip(offset).Limit(count).All(&blogs)
+	localsession.DB(database).C("blogs").Find(bson.M{"published": true}).Sort("-date").Skip(offset).Limit(count).All(&blogs)
 	return blogs
 }
 
@@ -156,7 +157,7 @@ func GetBlogsCrono(count int, page int) []BlogPost {
 		offset = (page - 1) * count
 	}
 	blogs := []BlogPost{}
-	localsession.DB(database).C("blogs").Find(bson.M{}).Sort("date").Skip(offset).Limit(count).All(&blogs)
+	localsession.DB(database).C("blogs").Find(bson.M{"published": true}).Sort("date").Skip(offset).Limit(count).All(&blogs)
 	return blogs
 }
 
@@ -231,6 +232,7 @@ func CreateBlog(img multipart.File, imageHeader *multipart.FileHeader, w http.Re
 	blog.Slug = Slugify(blog.Date.Format("Jan-02-2006-3:04PM") + "-" + blog.Title)
 	rand.Seed(time.Now().UnixNano())
 	blog.Width = rand.Intn(9) + 1
+	blog.Published = false
 
 	localsession := session.Copy()
 	defer localsession.Close()
