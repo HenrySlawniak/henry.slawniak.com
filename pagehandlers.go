@@ -8,7 +8,7 @@ import (
 )
 
 func StickerPageHandler(w http.ResponseWriter, req *http.Request, ctx *Context, pjax bool) (err error) {
-	http.Redirect(w, req, reverse("bio"), http.StatusFound)
+	http.Redirect(w, req, "https://henry.computer", http.StatusFound)
 	return nil
 }
 
