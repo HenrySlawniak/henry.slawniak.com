@@ -1,0 +1,116 @@
+@import url('https://fonts.googleapis.com/css?family=Lato');
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #f1f1f1;
+  font-family: 'Lato', 'Arial', sans-serif;
+  color: #000;
+  height: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.container {
+  width: 100%;
+  max-width: 950px;
+  padding: 16px;
+  margin: 0 auto;
+}
+
+a {
+  color: #3498db;
+  text-decoration: none !important;
+}
+
+a:visited {
+  color: #3498db;
+}
+
+a:hover {
+  color: #2980b9;
+}
+
+.card {
+  background: #fff;
+  border-radius: 3px;
+  box-shadow: 0 3px 4px rgba(0, 0, 0, 0.3);
+  margin: 20px 0;
+  min-height: 120px;
+  padding: 16px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.flex {
+  display: flex;
+  justify-content: space-around;
+}
+
+.card textarea {
+  resize: none;
+  font-size: 14px;
+  font-family: 'Lato', 'Arial', sans-serif;
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
+  outline: none;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-bottom: 2px solid rgba(0, 0, 0, 0.12);
+  padding: 5px;
+}
+
+
+input {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-bottom: 2px solid rgba(0, 0, 0, 0.12);
+  display: block;
+  font-size: 14px;
+  padding: 5px;
+  width: 100%;
+  text-align: left;
+  margin-bottom: 3px;
+}
+
+textarea:focus {
+  border-bottom: 2px solid #2196F3;
+}
+
+textarea:valid {
+  border-bottom: 2px solid #4CAF50;
+}
+
+input:focus {
+  outline: none;
+  border-bottom: 2px solid #2196F3;
+}
+
+input:valid {
+  border-bottom: 2px solid #4CAF50;
+}
+
+button {
+  min-width: 75px;
+  outline: none;
+  border: none;
+  color: #fff;
+  background: #3498db;
+  font-size: 20px;
+  padding: 8px;
+  border-radius: 3px;
+}
+
+button:hover {
+  background: #2980b9;
+}
+
+button:focus {
+  outline: none;
+}
+
+.card p {
+  text-indent: 1rem;
+  text-align: justify;
+}
