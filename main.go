@@ -95,8 +95,8 @@ func serveFile(w http.ResponseWriter, r *http.Request, path string) {
 	w.Header().Set("Cache-Control", "public, no-cache")
 	w.Header().Set("Last-Modified", mod.Format(time.RFC1123))
 	if r.Header.Get("If-None-Match") == sum {
-		w.WriteHeader(http.StatusNotModified)
 		w.Header().Set("ETag", sum)
+		w.WriteHeader(http.StatusNotModified)
 		return
 	}
 	w.Header().Set("ETag", sum)
